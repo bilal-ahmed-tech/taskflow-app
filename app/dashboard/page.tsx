@@ -12,13 +12,13 @@ export default async function DashboardPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const totalTasks = projects.reduce((acc:number, p) => acc + p.tasks.length, 0);
+  const totalTasks = projects.reduce((acc: number, p) => acc + p.tasks.length, 0);
   const completedTasks = projects.reduce(
     (acc: number, p) => acc + p.tasks.filter((t) => t.status === "DONE").length,
     0
   );
   const inProgressTasks = projects.reduce(
-    (acc, p) => acc + p.tasks.filter((t) => t.status === "IN_PROGRESS").length,
+    (acc: number, p) => acc + p.tasks.filter((t) => t.status === "IN_PROGRESS").length,
     0
   );
 
