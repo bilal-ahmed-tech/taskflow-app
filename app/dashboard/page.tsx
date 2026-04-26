@@ -2,9 +2,11 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { LayoutGrid, ListTodo, CheckCircle, Plus } from "lucide-react";
-import { type Project, type Task } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 
-type ProjectWithTasks = Project & { tasks: Task[] };
+type ProjectWithTasks = Prisma.ProjectGetPayload<{
+  include: { tasks: true };
+}>;
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -21,12 +23,12 @@ export default async function DashboardPage() {
   );
   const completedTasks = projects.reduce(
     (acc: number, p: ProjectWithTasks) =>
-      acc + p.tasks.filter((t: Task) => t.status === "DONE").length,
+      acc + p.tasks.filter((t) => t.status === "DONE").length,
     0,
   );
   const inProgressTasks = projects.reduce(
     (acc: number, p: ProjectWithTasks) =>
-      acc + p.tasks.filter((t: Task) => t.status === "IN_PROGRESS").length,
+      acc + p.tasks.filter((t) => t.status === "IN_PROGRESS").length,
     0,
   );
 
