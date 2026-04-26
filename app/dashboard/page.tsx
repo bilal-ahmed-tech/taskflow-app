@@ -116,7 +116,7 @@ export default async function DashboardPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((project: ProjectWithTasks) => {
+          {(projects as ProjectWithTasks[]).map((project) => {
             const total = project.tasks.length;
             const done = project.tasks.filter(
               (t) => t.status === "DONE",
