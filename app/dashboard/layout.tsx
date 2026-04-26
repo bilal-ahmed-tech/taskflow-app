@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { handleSignOut } from "@/lib/actions";
 import { LogOut } from "lucide-react";
+import { Toaster } from "sonner";
 
 export default async function DashboardLayout({
   children,
@@ -14,11 +15,12 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <Toaster richColors position="bottom-right" />
       <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link
             href="/dashboard"
-            className="text-xl font-bold text-gray-900 dark:text-white   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded transition-colors duration-200">
+            className="text-xl font-bold text-gray-900 dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded transition-colors duration-200">
             Task<span className="text-emerald-500">Flow</span>
           </Link>
 
