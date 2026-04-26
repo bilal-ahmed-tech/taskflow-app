@@ -1,24 +1,39 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
 import TaskList from "@/components/ui/TaskList";
+import { Suspense } from "react";
+import TaskFilterTabs from "@/components/ui/TaskFilterTabs";
+import DeleteProjectButton from "@/components/ui/DeleteProjectButton";
+import { type Status } from "@prisma/client";
 
-type Props = {
+interface PageProps {
   params: Promise<{ id: string }>;
-};
+  searchParams: Promise<{ status?: string }>;
+}
 
-export default async function ProjectPage({ params }: Props) {
+export default async function ProjectPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { status } = await searchParams;
   const session = await auth();
 
   const project = await prisma.project.findFirst({
     where: { id, userId: session!.user!.id },
-    include: { tasks: { orderBy: { createdAt: "desc" } } },
+    include: { tasks: true },
   });
 
   if (!project) notFound();
+
+  const tasks = await prisma.task.findMany({
+    where: {
+      projectId: id,
+      ...(status && status !== "ALL" ? { status: status as Status } : {}),
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
   const total = project.tasks.length;
   const done = project.tasks.filter((t) => t.status === "DONE").length;
@@ -46,12 +61,21 @@ export default async function ProjectPage({ params }: Props) {
               </p>
             )}
           </div>
-          <Link
-            href={`/dashboard/projects/${id}/tasks/new`}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 active:scale-95 text-white text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950 transition-all duration-200 shrink-0">
-            <Plus size={16} />
-            Add Task
-          </Link>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href={`/dashboard/projects/${id}/edit`}
+              aria-label="Edit project"
+              className="p-2 rounded-lg text-gray-400 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 transition-all duration-200">
+              <Pencil size={16} />
+            </Link>
+            <DeleteProjectButton projectId={id} />
+            <Link
+              href={`/dashboard/projects/${id}/tasks/new`}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 active:scale-95 text-white text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950 transition-all duration-200">
+              <Plus size={16} />
+              Add Task
+            </Link>
+          </div>
         </div>
 
         {/* Progress */}
@@ -72,17 +96,32 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {/* Tasks */}
-      <TaskList
-        tasks={project.tasks.map((t) => ({
-          id: t.id,
-          title: t.title,
-          description: t.description,
-          status: t.status,
-          priority: t.priority,
-          dueDate: t.dueDate ? t.dueDate.toISOString() : null,
-        }))}
-        projectId={id}
-      />
+      <div className="flex flex-col gap-4">
+        <Suspense
+          fallback={
+            <div className="flex gap-2">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-8 w-20 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse"
+                />
+              ))}
+            </div>
+          }>
+          <TaskFilterTabs />
+        </Suspense>
+        <TaskList
+          tasks={tasks.map((t) => ({
+            id: t.id,
+            title: t.title,
+            description: t.description,
+            status: t.status,
+            priority: t.priority,
+            dueDate: t.dueDate ? t.dueDate.toISOString() : null,
+          }))}
+          projectId={id}
+        />
+      </div>
     </div>
   );
 }

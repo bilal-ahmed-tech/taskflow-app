@@ -5,16 +5,15 @@ import { auth } from "@/lib/auth";
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const { name, description } = await req.json();
 
     if (!name?.trim()) {
       return NextResponse.json(
         { error: "Project name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +21,7 @@ export async function POST(req: NextRequest) {
       data: {
         name: name.trim(),
         description: description?.trim() || null,
-        userId: session.user!.id,
+        userId: session.user!.id as string,
       },
     });
 
@@ -30,7 +29,7 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -38,9 +37,8 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const projects = await prisma.project.findMany({
       where: { userId: session.user!.id },
@@ -52,7 +50,7 @@ export async function GET() {
   } catch {
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
