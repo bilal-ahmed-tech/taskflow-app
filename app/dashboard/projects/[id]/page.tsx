@@ -11,6 +11,18 @@ import DeleteProjectButton from "@/components/ui/DeleteProjectButton";
 
 type Status = "TODO" | "IN_PROGRESS" | "DONE";
 
+type Task = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: Status;
+  priority: "LOW" | "MEDIUM" | "HIGH";
+  dueDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
+};
+
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ status?: string }>;
@@ -37,7 +49,7 @@ export default async function ProjectPage({ params, searchParams }: PageProps) {
   });
 
   const total = project.tasks.length;
-  const done = project.tasks.filter((t) => t.status === "DONE").length;
+  const done = project.tasks.filter((t: Task) => t.status === "DONE").length;
   const progress = total === 0 ? 0 : Math.round((done / total) * 100);
 
   return (
@@ -112,7 +124,7 @@ export default async function ProjectPage({ params, searchParams }: PageProps) {
           <TaskFilterTabs />
         </Suspense>
         <TaskControls
-          tasks={tasks.map((t) => ({
+          tasks={tasks.map((t: Task) => ({
             id: t.id,
             title: t.title,
             description: t.description,

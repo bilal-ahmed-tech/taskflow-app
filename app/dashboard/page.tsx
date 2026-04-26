@@ -119,7 +119,7 @@ export default async function DashboardPage() {
           {(projects as ProjectWithTasks[]).map((project) => {
             const total = project.tasks.length;
             const done = project.tasks.filter(
-              (t) => t.status === "DONE",
+              (t: TaskItem) => t.status === "DONE",
             ).length;
             const progress = total === 0 ? 0 : Math.round((done / total) * 100);
 
