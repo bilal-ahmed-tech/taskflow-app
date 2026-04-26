@@ -8,7 +8,8 @@ import TaskControls from "@/components/ui/TaskControls";
 import { Suspense } from "react";
 import TaskFilterTabs from "@/components/ui/TaskFilterTabs";
 import DeleteProjectButton from "@/components/ui/DeleteProjectButton";
-import { type Status } from "@prisma/client";
+
+type Status = "TODO" | "IN_PROGRESS" | "DONE";
 
 interface PageProps {
   params: Promise<{ id: string }>;
