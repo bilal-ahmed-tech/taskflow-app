@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
-import TaskList from "@/components/ui/TaskList";
+import TaskControls from "@/components/ui/TaskControls";
 import { Suspense } from "react";
 import TaskFilterTabs from "@/components/ui/TaskFilterTabs";
 import DeleteProjectButton from "@/components/ui/DeleteProjectButton";
@@ -110,7 +110,7 @@ export default async function ProjectPage({ params, searchParams }: PageProps) {
           }>
           <TaskFilterTabs />
         </Suspense>
-        <TaskList
+        <TaskControls
           tasks={tasks.map((t) => ({
             id: t.id,
             title: t.title,

@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertCircle, CheckCircle2, Circle, Clock, Pencil, Trash2 } from "lucide-react";
+import { isOverdue } from "@/lib/utils";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Circle,
+  Clock,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type Task = {
@@ -22,15 +30,10 @@ const priorityStyles = {
 
 const statusStyles = {
   TODO: "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400",
-  IN_PROGRESS: "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  IN_PROGRESS:
+    "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400",
   DONE: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
 };
-
-function isOverdue(dueDate: string | null, status: Task["status"]): boolean {
-  if (!dueDate || status === "DONE") return false;
-  return new Date(dueDate) < new Date();
-}
-
 export default function TaskList({
   tasks,
   projectId,
@@ -101,7 +104,9 @@ export default function TaskList({
                   task.status === "DONE" ? "TODO" : "DONE"
                 )
               }
-              aria-label={task.status === "DONE" ? "Mark as todo" : "Mark as done"}
+              aria-label={
+                task.status === "DONE" ? "Mark as todo" : "Mark as done"
+              }
               className="mt-0.5 shrink-0 text-gray-400 hover:text-emerald-500 dark:hover:text-emerald-400 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded transition-all duration-200"
             >
               {task.status === "DONE" ? (
