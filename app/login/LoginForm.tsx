@@ -16,6 +16,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [touched, setTouched] = useState({ email: false, password: false });
 
+  // Basic login validation – no password strength rules
   const errors = {
     email:
       touched.email && !form.email
@@ -23,17 +24,10 @@ export default function LoginForm() {
         : touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
         ? "Enter a valid email address"
         : "",
-    password:
-      touched.password && !form.password
-        ? "Password is required"
-        : "",
+    password: touched.password && !form.password ? "Password is required" : "",
   };
 
-  const isValid =
-    !errors.email &&
-    !errors.password &&
-    form.email &&
-    form.password;
+  const isValid = !errors.email && !errors.password && form.email && form.password;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +76,8 @@ export default function LoginForm() {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="email"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Email
           </label>
           <input
@@ -93,12 +88,11 @@ export default function LoginForm() {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-            className={`w-full px-4 py-2.5 rounded-xl text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:border-emerald-500 transition-all duration-200
-              ${
-                errors.email
-                  ? "border border-red-400 dark:border-red-500 focus-visible:ring-red-500"
-                  : "border border-gray-200 dark:border-gray-700 focus-visible:ring-emerald-500"
-              }`}
+            className={`w-full px-4 py-2.5 rounded-xl text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:border-emerald-500 transition-all duration-200 ${
+              errors.email
+                ? "border border-red-400 dark:border-red-500 focus-visible:ring-red-500"
+                : "border border-gray-200 dark:border-gray-700 focus-visible:ring-emerald-500"
+            }`}
           />
           {errors.email && (
             <p className="text-xs text-red-500 dark:text-red-400">{errors.email}</p>
@@ -109,7 +103,8 @@ export default function LoginForm() {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="password"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            className="text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Password
           </label>
           <div className="relative">
@@ -121,12 +116,11 @@ export default function LoginForm() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-              className={`w-full px-4 py-2.5 pr-11 rounded-xl text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:border-emerald-500 transition-all duration-200
-                ${
-                  errors.password
-                    ? "border border-red-400 dark:border-red-500 focus-visible:ring-red-500"
-                    : "border border-gray-200 dark:border-gray-700 focus-visible:ring-emerald-500"
-                }`}
+              className={`w-full px-4 py-2.5 pr-11 rounded-xl text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:border-emerald-500 transition-all duration-200 ${
+                errors.password
+                  ? "border border-red-400 dark:border-red-500 focus-visible:ring-red-500"
+                  : "border border-gray-200 dark:border-gray-700 focus-visible:ring-emerald-500"
+              }`}
             />
             <button
               type="button"
@@ -145,7 +139,8 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 active:scale-[0.98] text-white font-semibold text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 mt-2">
+          className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 active:scale-[0.98] text-white font-semibold text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 mt-2"
+        >
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
