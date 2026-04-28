@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📋 TaskFlow
 
-## Getting Started
+A modern task management application built with Next.js, TypeScript, and Prisma, featuring intelligent project and task organization, real-time collaboration, secure authentication, and persistent data storage.
 
-First, run the development server:
+🔗 **Live Demo:** [taskflow-app-gray.vercel.app](https://taskflow-app-gray.vercel.app/)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn package manager
+- PostgreSQL or MySQL database
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/taskflow.git
+
+# Navigate to the project folder
+cd taskflow
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+
+# Set up the database
+npx prisma migrate dev
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 Available Scripts
+
+- `npm run dev` — Start Next.js development server with hot reload
+- `npm run build` — Build production bundle with optimization
+- `npm start` — Start production server
+- `npm run lint` — Run ESLint for code quality
+- `npx prisma migrate dev` — Create and run database migrations
+- `npx prisma studio` — Open Prisma Studio for database visualization
+
+---
+
+## 🛠️ Built With
+
+- **Next.js 15** — React framework with server-side rendering
+- **React 19** — Modern UI framework with hooks
+- **TypeScript** — Type-safe development
+- **Tailwind CSS** — Utility-first CSS for responsive design
+- **Prisma** — Modern ORM for database management
+- **NextAuth.js** — Authentication solution for Next.js
+- **PostgreSQL/MySQL** — Relational database
+
+---
+
+## 📚 Learn More
+
+To learn more about the technologies used in this project:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Prisma Documentation](https://www.prisma.io/docs) - database ORM documentation.
+- [NextAuth.js Guide](https://next-auth.js.org) - authentication setup and usage.
+- [Tailwind CSS](https://tailwindcss.com) - utility-first CSS framework.
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - type-safe JavaScript.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📝 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+MIT License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/bilal-ahmed-tech/taskflow-app).
+
+---
+
+## 👨‍💻 Author
+
+Built with ❤️ by [Bilal Ahmed]
