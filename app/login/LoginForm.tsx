@@ -3,15 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeOff, CheckCircle2, XCircle } from "lucide-react";
-
-const passwordRules = [
-  { label: "At least 8 characters", test: (p: string) => p.length >= 8 },
-  { label: "One uppercase letter", test: (p: string) => /[A-Z]/.test(p) },
-  { label: "One lowercase letter", test: (p: string) => /[a-z]/.test(p) },
-  { label: "One number", test: (p: string) => /[0-9]/.test(p) },
-  { label: "One special character", test: (p: string) => /[^A-Za-z0-9]/.test(p) },
-];
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -22,32 +14,7 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showRules, setShowRules] = useState(false);
   const [touched, setTouched] = useState({ email: false, password: false });
-
-  const passwordStrength = passwordRules.filter((r) => r.test(form.password)).length;
-
-  const strengthLabel =
-    passwordStrength <= 1
-      ? "Very weak"
-      : passwordStrength === 2
-      ? "Weak"
-      : passwordStrength === 3
-      ? "Fair"
-      : passwordStrength === 4
-      ? "Strong"
-      : "Very strong";
-
-  const strengthColor =
-    passwordStrength <= 1
-      ? "bg-red-500"
-      : passwordStrength === 2
-      ? "bg-orange-500"
-      : passwordStrength === 3
-      ? "bg-amber-500"
-      : passwordStrength === 4
-      ? "bg-emerald-400"
-      : "bg-emerald-500";
 
   const errors = {
     email:
@@ -59,8 +26,6 @@ export default function LoginForm() {
     password:
       touched.password && !form.password
         ? "Password is required"
-        : touched.password && passwordStrength < 5
-        ? "Password does not meet all requirements"
         : "",
   };
 
@@ -68,8 +33,7 @@ export default function LoginForm() {
     !errors.email &&
     !errors.password &&
     form.email &&
-    form.password &&
-    passwordStrength === 5;
+    form.password;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +121,6 @@ export default function LoginForm() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-              onFocus={() => setShowRules(true)}
               className={`w-full px-4 py-2.5 pr-11 rounded-xl text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:border-emerald-500 transition-all duration-200
                 ${
                   errors.password
@@ -174,59 +137,6 @@ export default function LoginForm() {
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-
-          {/* Strength bar */}
-          {showRules && form.password && (
-            <div className="flex gap-1 mt-1">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    i < passwordStrength ? strengthColor : "bg-gray-200 dark:bg-gray-700"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-          {showRules && form.password && (
-            <p className={`text-xs font-medium ${
-              passwordStrength <= 2
-                ? "text-red-500"
-                : passwordStrength === 3
-                ? "text-amber-500"
-                : "text-emerald-500"
-            }`}>
-              {strengthLabel}
-            </p>
-          )}
-
-          {/* Rules checklist */}
-          {showRules && (
-            <div className="flex flex-col gap-1 mt-1 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-              {passwordRules.map((rule) => {
-                const passed = rule.test(form.password);
-                return (
-                  <div key={rule.label} className="flex items-center gap-2">
-                    {passed ? (
-                      <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-                    ) : (
-                      <XCircle size={13} className="text-gray-300 dark:text-gray-600 shrink-0" />
-                    )}
-                    <span
-                      className={`text-xs transition-colors duration-200 ${
-                        passed
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-gray-400 dark:text-gray-500"
-                      }`}
-                    >
-                      {rule.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
           {errors.password && (
             <p className="text-xs text-red-500 dark:text-red-400">{errors.password}</p>
           )}
