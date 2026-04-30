@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/layout/ThemeProvider";
+import Footer from "@/components/layout/Footer";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -41,6 +42,7 @@ export default function RootLayout({
       <body className={`${geist.className} bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white min-h-screen`}>
         <ThemeProvider>
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
